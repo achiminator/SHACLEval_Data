@@ -1,0 +1,202 @@
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>metric</th>
+      <th>rootMetric</th>
+      <th>nameInDatabase</th>
+      <th>SPARQLMetric</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>:SHACLEval_CardinalityConstraints</td>
+      <td>:SHACL_max_only</td>
+      <td>SHACL_max_only</td>
+      <td>SELECT (COUNT(*) AS ?result)<br/>WHERE {<br/>  {<br/>    ?propshape sh:property ?prop .<br/>    ?prop sh:maxCount ?maxCount .<br/>    FILTER NOT EXISTS {<br/>      ?prop sh:minCount ?minCount .<br/>    }<br/>  }<br/>  UNION<br/>  {<br/>    VALUES ?type { sh:NodeShape sh:PropertyShape }<br/>    ?shape a ?type ;<br/>           sh:maxCount ?maxCount .<br/>    FILTER NOT EXISTS {<br/>      ?shape sh:minCount ?minCount .<br/>    }<br/>  }<br/>}</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>:SHACLEval_ValueTypeConstraints</td>
+      <td>:SHACL_class</td>
+      <td>SHACL_class</td>
+      <td>SELECT (COUNT(?a) as ?result) WHERE {<br/>    ?a sh:class ?o<br/>}</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>:SHACLEval_TotalConstrainedClasses</td>
+      <td>:SHACL_Classes_with_indirect_and_direct_shapes</td>
+      <td>SHACL_Classes_with_indirect_and_direct_shapes</td>
+      <td>SELECT ( COUNT ( DISTINCT ?subClass ) AS ?countdirindir )<br/>        WHERE {<br/>            ?subClass rdfs:subClassOf ?Class .<br/>            ?Class rdfs:subClassOf* ?parentClass .<br/>            {<br/>                {<br/>                    ?shape sh:targetClass ?parentClass ;<br/>                        sh:property ?propertyShapeInNodeShape .<br/>                }<br/>                UNION<br/>                {<br/>                    ?propertyShape a sh:PropertyShape ;<br/>                        sh:path ?property .<br/>                    ?property ( rdfs:domain | rdfs:range ) ?parentClass .<br/>                }<br/>            }<br/>            {<br/>                {<br/>                    ?s sh:targetClass ?subClass ;<br/>                        sh:property ?propertyShapeInNodeShape2 .<br/>                }<br/>                UNION<br/>                {<br/>                ?propertyShape a sh:PropertyShape ;<br/>                    sh:path ?property .<br/>                ?property ( rdfs:domain | rdfs:range ) ?subClass .<br/>                }<br/>            }<br/>        }</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>:SHACLEval_MinMaxConstraints</td>
+      <td>:SHACL_Datatype_Property_w_max_cardinality</td>
+      <td>SHACL_Datatype_Property_w_max_cardinality</td>
+      <td>SELECT ( COUNT ( DISTINCT ?shape ) AS ?result)<br/>WHERE {<br/>?odprop a owl:DatatypeProperty  .<br/>?shape sh:path ?odprop ;<br/>\tsh:maxCount ?o .<br/>}</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>:SHACLEval_NsWMultipleClsNsRatio</td>
+      <td>:SHACL_NodeShapes</td>
+      <td>SHACL_NodeShapes</td>
+      <td>SELECT (COUNT(?a) as ?result) WHERE {<br/>    ?a a sh:NodeShape<br/>}</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>:SHACLEval_NonValidationsRatioPropertyShapesToPropertyShapesRatio</td>
+      <td>:SHACL_PropertyShapes</td>
+      <td>SHACL_PropertyShapes</td>
+      <td>SELECT (COUNT(?a) as ?result) WHERE {<br/>    ?a a sh:PropertyShape<br/>}</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>:SHACLEval_TotalPropertyShapes</td>
+      <td>:SHACL_Isolated_PropertyShapes_with_non_validations</td>
+      <td>SHACL_isolated_PropertyShapes_with_non_validations</td>
+      <td>SELECT  (COUNT ( DISTINCT ?shape ) AS ?result)<br/>WHERE {<br/><br/>?shape a sh:PropertyShape  ;<br/>(sh:severity |sh:message |sh:name |sh:description |sh:order |sh:group |sh:defaultValue ) ?o .<br/>}</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>:SHACLEval_MinToMinMaxRatio</td>
+      <td>:SHACL_max_only</td>
+      <td>SHACL_max_only</td>
+      <td>SELECT (COUNT(*) AS ?result)<br/>WHERE {<br/>  {<br/>    ?propshape sh:property ?prop .<br/>    ?prop sh:maxCount ?maxCount .<br/>    FILTER NOT EXISTS {<br/>      ?prop sh:minCount ?minCount .<br/>    }<br/>  }<br/>  UNION<br/>  {<br/>    VALUES ?type { sh:NodeShape sh:PropertyShape }<br/>    ?shape a ?type ;<br/>           sh:maxCount ?maxCount .<br/>    FILTER NOT EXISTS {<br/>      ?shape sh:minCount ?minCount .<br/>    }<br/>  }<br/>}</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>:SHACLEval_ConstrainedOPRatio</td>
+      <td>:Object_Properties</td>
+      <td>objectProperties</td>
+      <td>SELECT (COUNT(DISTINCT ?a) as ?result) WHERE {<br/>    {<br/>        ?a a owl:ObjectProperty .<br/>    }<br/>    UNION{<br/>        ?a rdfs:subPropertyOf* ?b . <br/>        ?b a owl:ObjectProperty<br/>    }    UNION{<br/>        ?a ^rdfs:subPropertyOf* ?b . <br/>        ?b a owl:ObjectProperty<br/>    }<br/>}</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>:SHACLEval_IndirectlyConstrainedToConstraintClassesRatio</td>
+      <td>:SHACL_Classes_with_indirect_and_direct_shapes</td>
+      <td>SHACL_Classes_with_indirect_and_direct_shapes</td>
+      <td>SELECT ( COUNT ( DISTINCT ?subClass ) AS ?countdirindir )<br/>        WHERE {<br/>            ?subClass rdfs:subClassOf ?Class .<br/>            ?Class rdfs:subClassOf* ?parentClass .<br/>            {<br/>                {<br/>                    ?shape sh:targetClass ?parentClass ;<br/>                        sh:property ?propertyShapeInNodeShape .<br/>                }<br/>                UNION<br/>                {<br/>                    ?propertyShape a sh:PropertyShape ;<br/>                        sh:path ?property .<br/>                    ?property ( rdfs:domain | rdfs:range ) ?parentClass .<br/>                }<br/>            }<br/>            {<br/>                {<br/>                    ?s sh:targetClass ?subClass ;<br/>                        sh:property ?propertyShapeInNodeShape2 .<br/>                }<br/>                UNION<br/>                {<br/>                ?propertyShape a sh:PropertyShape ;<br/>                    sh:path ?property .<br/>                ?property ( rdfs:domain | rdfs:range ) ?subClass .<br/>                }<br/>            }<br/>        }</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>:SHACLEval_OPPropRatio</td>
+      <td>:SHACL_Constrained_Datatype_Properties</td>
+      <td>SHACL_Constrained_Datatype_Properties</td>
+      <td>SELECT ( COUNT ( DISTINCT ?s) AS ?result ) <br/> WHERE {<br/> {<br/> ?s ?p owl:DatatypeProperty .<br/> {?shape sh:path ?s.}<br/> UNION<br/> {?shape sh:property [ sh:path ?s ] .}<br/> VALUES ?type { sh:NodeShape sh:PropertyShape }<br/> ?shape a ?type .<br/><br/>}}</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>:SHACLEval_NodeShapesAnnotationsToAnnotationsRatio</td>
+      <td>:SHACL_NodeShapes_with_non_validations</td>
+      <td>SHACL_NodeShapes_with_non_validations</td>
+      <td>SELECT  (COUNT ( DISTINCT ?shape ) AS ?result)<br/>WHERE {<br/><br/>?shape a sh:NodeShape  ;<br/>(sh:severity |sh:message |sh:name |sh:description |sh:order |sh:group |sh:defaultValue ) ?o .<br/>}</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>:SHACLEval_NonValidationsRatioNodeShapesToNodeShapesRatio</td>
+      <td>:SHACL_NodeShapes</td>
+      <td>SHACL_NodeShapes</td>
+      <td>SELECT (COUNT(?a) as ?result) WHERE {<br/>    ?a a sh:NodeShape<br/>}</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>:SHACLEval_MaxToMinMaxRatio</td>
+      <td>:SHACL_max_only</td>
+      <td>SHACL_max_only</td>
+      <td>SELECT (COUNT(*) AS ?result)<br/>WHERE {<br/>  {<br/>    ?propshape sh:property ?prop .<br/>    ?prop sh:maxCount ?maxCount .<br/>    FILTER NOT EXISTS {<br/>      ?prop sh:minCount ?minCount .<br/>    }<br/>  }<br/>  UNION<br/>  {<br/>    VALUES ?type { sh:NodeShape sh:PropertyShape }<br/>    ?shape a ?type ;<br/>           sh:maxCount ?maxCount .<br/>    FILTER NOT EXISTS {<br/>      ?shape sh:minCount ?minCount .<br/>    }<br/>  }<br/>}</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>:SHACLEval_TotalAnnotationsOnPropertyshapes</td>
+      <td>:SHACL_PropertyShapes_with_non_validations</td>
+      <td>SHACL_PropertyShapes_with_non_validations</td>
+      <td>SELECT ( COUNT ( DISTINCT ?prop ) as ?result )<br/>WHERE {<br/>?Shape sh:property ?prop .<br/>?prop (sh:severity |sh:message |sh:name |sh:description |sh:order |sh:group |sh:defaultValue ) ?value .<br/>}</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>:SHACLEval_TotalAnnotationsOnNodeshapes</td>
+      <td>:SHACL_NodeShapes_with_non_validations</td>
+      <td>SHACL_NodeShapes_with_non_validations</td>
+      <td>SELECT  (COUNT ( DISTINCT ?shape ) AS ?result)<br/>WHERE {<br/><br/>?shape a sh:NodeShape  ;<br/>(sh:severity |sh:message |sh:name |sh:description |sh:order |sh:group |sh:defaultValue ) ?o .<br/>}</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>:SHACLEval_DPPropRatio</td>
+      <td>:SHACL_Constrained_Datatype_Properties</td>
+      <td>SHACL_Constrained_Datatype_Properties</td>
+      <td>SELECT ( COUNT ( DISTINCT ?s) AS ?result ) <br/> WHERE {<br/> {<br/> ?s ?p owl:DatatypeProperty .<br/> {?shape sh:path ?s.}<br/> UNION<br/> {?shape sh:property [ sh:path ?s ] .}<br/> VALUES ?type { sh:NodeShape sh:PropertyShape }<br/> ?shape a ?type .<br/><br/>}}</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>:SHACLEval_DirectlyAndIndirectlyConstrainedToConstraintClassesRatio</td>
+      <td>:SHACL_Classes_with_indirect_and_direct_shapes</td>
+      <td>SHACL_Classes_with_indirect_and_direct_shapes</td>
+      <td>SELECT ( COUNT ( DISTINCT ?subClass ) AS ?countdirindir )<br/>        WHERE {<br/>            ?subClass rdfs:subClassOf ?Class .<br/>            ?Class rdfs:subClassOf* ?parentClass .<br/>            {<br/>                {<br/>                    ?shape sh:targetClass ?parentClass ;<br/>                        sh:property ?propertyShapeInNodeShape .<br/>                }<br/>                UNION<br/>                {<br/>                    ?propertyShape a sh:PropertyShape ;<br/>                        sh:path ?property .<br/>                    ?property ( rdfs:domain | rdfs:range ) ?parentClass .<br/>                }<br/>            }<br/>            {<br/>                {<br/>                    ?s sh:targetClass ?subClass ;<br/>                        sh:property ?propertyShapeInNodeShape2 .<br/>                }<br/>                UNION<br/>                {<br/>                ?propertyShape a sh:PropertyShape ;<br/>                    sh:path ?property .<br/>                ?property ( rdfs:domain | rdfs:range ) ?subClass .<br/>                }<br/>            }<br/>        }</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>:SHACLEval_ValueRangeConstraints</td>
+      <td>:SHACL_maxExclusive</td>
+      <td>SHACL_maxExclusive</td>
+      <td>SELECT (COUNT( ?a) as ?result) WHERE {<br/>?a sh:maxExclusive ?b<br/>}</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>:SHACLEval_ConstrainedClassesToClassesRatio</td>
+      <td>:SHACL_Classes_with_indirect_and_direct_shapes</td>
+      <td>SHACL_Classes_with_indirect_and_direct_shapes</td>
+      <td>SELECT ( COUNT ( DISTINCT ?subClass ) AS ?countdirindir )<br/>        WHERE {<br/>            ?subClass rdfs:subClassOf ?Class .<br/>            ?Class rdfs:subClassOf* ?parentClass .<br/>            {<br/>                {<br/>                    ?shape sh:targetClass ?parentClass ;<br/>                        sh:property ?propertyShapeInNodeShape .<br/>                }<br/>                UNION<br/>                {<br/>                    ?propertyShape a sh:PropertyShape ;<br/>                        sh:path ?property .<br/>                    ?property ( rdfs:domain | rdfs:range ) ?parentClass .<br/>                }<br/>            }<br/>            {<br/>                {<br/>                    ?s sh:targetClass ?subClass ;<br/>                        sh:property ?propertyShapeInNodeShape2 .<br/>                }<br/>                UNION<br/>                {<br/>                ?propertyShape a sh:PropertyShape ;<br/>                    sh:path ?property .<br/>                ?property ( rdfs:domain | rdfs:range ) ?subClass .<br/>                }<br/>            }<br/>        }</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>:SHACLEval_PropertyShapesAnnotationsToAnnotationsRatio</td>
+      <td>:SHACL_NodeShapes_with_non_validations</td>
+      <td>SHACL_NodeShapes_with_non_validations</td>
+      <td>SELECT  (COUNT ( DISTINCT ?shape ) AS ?result)<br/>WHERE {<br/><br/>?shape a sh:NodeShape  ;<br/>(sh:severity |sh:message |sh:name |sh:description |sh:order |sh:group |sh:defaultValue ) ?o .<br/>}</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>:SHACLEval_ConstrainedDTRatio</td>
+      <td>:Data_Properties</td>
+      <td>dataProperties</td>
+      <td>SELECT (COUNT(DISTINCT ?b) as ?result) WHERE {<br/>    {<br/>        ?b a owl:DatatypeProperty .<br/>    }<br/>    UNION {<br/>        ?b rdfs:subPropertyOf _:ba .<br/>        _:ba a owl:DatatypeProperty .<br/>    }<br/>    UNION {<br/>        _:bb a owl:DatatypeProperty ;<br/>            rdfs:subPropertyOf ?b<br/>    }<br/>}</td>
+    </tr>
+    <tr>
+      <th>22</th>
+      <td>:SHACLEval_PropertyPairConstraints</td>
+      <td>:SHACL_disjoint</td>
+      <td>SHACL_disjoint</td>
+      <td>SELECT (COUNT(?a) as ?result) WHERE {<br/>    ?a sh:disjoint ?o<br/>}</td>
+    </tr>
+    <tr>
+      <th>23</th>
+      <td>:SHACLEval_DirectlyConstrainedToConstraintClassesRatio</td>
+      <td>:SHACL_Classes_with_indirect_and_direct_shapes</td>
+      <td>SHACL_Classes_with_indirect_and_direct_shapes</td>
+      <td>SELECT ( COUNT ( DISTINCT ?subClass ) AS ?countdirindir )<br/>        WHERE {<br/>            ?subClass rdfs:subClassOf ?Class .<br/>            ?Class rdfs:subClassOf* ?parentClass .<br/>            {<br/>                {<br/>                    ?shape sh:targetClass ?parentClass ;<br/>                        sh:property ?propertyShapeInNodeShape .<br/>                }<br/>                UNION<br/>                {<br/>                    ?propertyShape a sh:PropertyShape ;<br/>                        sh:path ?property .<br/>                    ?property ( rdfs:domain | rdfs:range ) ?parentClass .<br/>                }<br/>            }<br/>            {<br/>                {<br/>                    ?s sh:targetClass ?subClass ;<br/>                        sh:property ?propertyShapeInNodeShape2 .<br/>                }<br/>                UNION<br/>                {<br/>                ?propertyShape a sh:PropertyShape ;<br/>                    sh:path ?property .<br/>                ?property ( rdfs:domain | rdfs:range ) ?subClass .<br/>                }<br/>            }<br/>        }</td>
+    </tr>
+    <tr>
+      <th>24</th>
+      <td>:SHACLEval_ConstrainedInstancesToInstanceConstraintsRatio</td>
+      <td>:SHACL_Shapes_constraining_Instances</td>
+      <td>SHACL_Shapes_constraining_Instances</td>
+      <td>SELECT (?shapesinsttotal AS ?result)<br/>    WHERE {<br/>    {<br/>        SELECT ( COUNT ( DISTINCT ?shape ) AS ?shapesinsttotal ) (<br/>        COUNT ( DISTINCT ?instance ) AS ?instshapescount )<br/>        WHERE {<br/>            ?instance a ?subClass .<br/>            ?subClass a owl:Class .<br/>            {<br/>                {<br/>                    ?s sh:targetClass ?subClass .<br/>                    ?s sh:property ?propertyShapeInNodeShape .<br/>                    BIND (?s AS ?shape )<br/>                }<br/>                UNION<br/>                {<br/>                    ?propertyShape a sh:PropertyShape ;<br/>                        sh:path ?property .<br/>                    ?property ( rdfs:domain | rdfs:range ) ?subClass .<br/>                    ?subClass ?p owl:Class .<br/>                    BIND (?propertyShape AS ?shape )<br/>                }<br/>            }<br/>            UNION<br/>            {<br/>                ?subClass rdfs:subClassOf ?Class .<br/>                ?Class rdfs:subClassOf * ?parentClass .<br/>                {<br/>                    ?shape sh:targetClass ?parentClass ;<br/>                        sh:property ?propertyShapeInNodeShape2<br/>                }<br/>                UNION<br/>                {<br/>                    ?propertyShape a sh:PropertyShape ;<br/>                        sh:path ?property .<br/>                    ?property ( rdfs:domain | rdfs:range ) ?parentClass .<br/>                    BIND (?propertyShape AS ?shape )<br/>                }<br/>            }<br/>            UNION<br/>            {<br/>                ?instanceShape sh:targetNode ?instance .<br/>                BIND (?instanceShape AS ?shape )<br/>            }<br/>        }<br/>    }<br/> }</td>
+    </tr>
+    <tr>
+      <th>25</th>
+      <td>:SHACLEval_StringBasedConstraints</td>
+      <td>:SHACL_languageIn</td>
+      <td>SHACL_languageIn</td>
+      <td>SELECT (COUNT(?a) as ?result) WHERE {<br/>    ?a sh:languageIn ?o<br/>}</td>
+    </tr>
+    <tr>
+      <th>26</th>
+      <td>:SHACLEval_ConstrainedInstancesToInstancesRatio</td>
+      <td>:Individuals</td>
+      <td>individuals</td>
+      <td>SELECT (COUNT(?a) as ?result) WHERE {<br/>?a a owl:NamedIndividual .<br/>}</td>
+    </tr>
+  </tbody>
+</table>
